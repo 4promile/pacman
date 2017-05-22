@@ -1,0 +1,70 @@
+<html>
+<head>
+</head>
+
+<body>
+<script src="js/pixi.min.js"></script>
+
+<script>
+
+
+//aliasy, czyli zmienne bêd¹ce komendami
+var Container = PIXI.Container,
+    autoDetectRenderer = PIXI.autoDetectRenderer,
+    loader = PIXI.loader,
+    resources = PIXI.loader.resources,
+    Sprite = PIXI.Sprite;
+
+//Create a Pixi stage and renderer and add the 
+//renderer.view to the DOM
+var stage = new Container(),
+    renderer = autoDetectRenderer(256, 256);
+document.body.appendChild(renderer.view);
+
+//load an image and run the `setup` function when it's done
+loader
+  .add("images/cat.png")
+  .load(setup);
+
+function setup() {
+
+  //Create the `cat` sprite, add it to the stage, and render it
+  var cat = new Sprite(resources["images/cat.png"].texture);  
+  stage.addChild(cat);
+  
+  //Change the sprite's position
+  cat.x = 96;
+  cat.y = 96;
+  //inaczej mo¿na to zapisaæ tak: cat.position.set(96,96);
+  
+  
+  //Change the sprite's size
+  cat.width = 80;
+  cat.height = 120;
+  //zmiana skali, zmienijszenie lub zwiêkszenie 
+  cat.scale.x = 0.5;
+  cat.scale.y = 0.5;
+  //inaczej cat.scale.set(0.5, 0.5);
+  
+  cat.anchor.x = 0.5;
+  cat.anchor.y = 0.5;
+  //inaczej sprite.anchor.set(x, y), jest te¿ cat.pivot.set(32, 32), ró¿ni siê tym, ¿e anchor ustawia wartoœci wzglêdne od 0 do 1 a pivot bezwzglêdne piksele
+  cat.rotation = 0.5;
+  
+  
+  
+		var semicircle = new PIXI.Graphics();
+		semicircle.beginFill(0xff0000);
+		semicircle.lineStyle(2, 0xffffff);
+		semicircle.arc(50, 50, 10, 0, Math.PI/3); // cx, cy, radius, startAngle, endAngle
+		semicircle.x = 90;
+		stage.addChild(semicircle);
+		
+		
+  renderer.render(stage);
+}
+
+</script>
+
+</body>
+</html>
