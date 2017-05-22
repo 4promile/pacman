@@ -55,13 +55,25 @@ function setup() {
   
 		var semicircle = new PIXI.Graphics();
 		semicircle.beginFill(0xff0000);
+		//semicircle.endFill(0x0000ff);
 		semicircle.lineStyle(2, 0xffffff);
-		semicircle.arc(50, 50, 10, 0, Math.PI/3); // cx, cy, radius, startAngle, endAngle
+		semicircle.arc(50, 50, 50, 0, Math.PI); // cx, cy, radius, startAngle, endAngle
 		semicircle.x = 90;
 		stage.addChild(semicircle);
 		
 		
+  gameLoop();
+  
+  function gameLoop(){
+
+  //Loop this function 60 times per second
+  requestAnimationFrame(gameLoop);
+
+  
+
+  //Render the stage
   renderer.render(stage);
+}
 }
 
 </script>
