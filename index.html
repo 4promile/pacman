@@ -52,19 +52,77 @@ function setup() {
   cat.rotation = 0.5;
   
   
-  
+		//rysowanie ³uku/pó³okregu
 		var semicircle = new PIXI.Graphics();
-		semicircle.beginFill(0xff0000);
-		//semicircle.endFill(0x0000ff);
+		semicircle.beginFill(0xff0000);	//mo¿na u¿yæ komendy endFill() po czym przemieœciæ siê do kolejnego punktu i zacz¹æ beginFill w ramach tego samego obiektu 
 		semicircle.lineStyle(2, 0xffffff);
 		semicircle.arc(50, 50, 50, 0, Math.PI); // cx, cy, radius, startAngle, endAngle
 		semicircle.x = 90;
 		stage.addChild(semicircle);
 		
 		
+		//rysowanie napisu
+		var style = new PIXI.TextStyle({
+		fontFamily: 'Arial',
+		fontSize: 16,
+		fontStyle: 'italic',
+		fontWeight: 'bold',
+		fill: ['#ffffff', '#00ff99'], // gradient
+		stroke: '#4a1850',
+		strokeThickness: 5,
+		dropShadow: true,
+		dropShadowColor: '#000000',
+		dropShadowBlur: 4,
+		dropShadowAngle: Math.PI / 6,
+		dropShadowDistance: 6,
+		wordWrap: true,
+		wordWrapWidth: 440
+		});
+		
+		var klatekNaSekunde = 0;
+		var richText = new PIXI.Text('klatek na sekundê: ' + klatekNaSekunde, style);
+		richText.x = 30;
+		richText.y = 180;
+
+		stage.addChild(richText);
+		
+		
+	
+	
+	var sredniaKlatek = {
+		tablica:	[],
+		nrTablicy:	0,
+		liczbaBadanychKlatek:	1000,
+		sumaCzasow:	0,
+		srednia:	0,
+		oblicz:		function(){
+					
+						sumaCzasow = 0;
+						for (var i=0; i<this.liczbaBadanychKlatek; i++){
+							sumaCzasow += this.tablica[i];
+						}
+						this.srednia = sumaCzasow/this.liczbaBadanychKlatek;
+						return this.srednia;
+					},
+		dodajDoTablicy:	function(aktualnaSredniaKlatek){
+							this.tablica[this.nrTablicy] = aktualnaSredniaKlatek;
+							this.nrTablicy +=1;
+							if(this.nrTablicy>this.liczbaBadanychKlatek) this.nrTablicy = 0;
+						},
+					
+		funkcja:	function(aktualnaSredniaKlatek){
+						this.dodajDoTablicy(aktualnaSredniaKlatek);
+						return this.oblicz();
+					},
+	};
+	
+var klatekNaSekunde = 0;
+		
   gameLoop();
   var catLifeFl = true;
-  function gameLoop(){
+  var czasMemory = 0;
+  var czasMemory = czasKlatki;
+  function gameLoop(czas){
 
   //Loop this function 60 times per second
   requestAnimationFrame(gameLoop);
@@ -73,10 +131,20 @@ function setup() {
 
   //Render the stage
   renderer.render(stage);
-  if (catLifeFl) {cat.x +=0.1; if (cat.x >150){cat.destroy(); catLifeFl = false;};}
+  czasKlatki = czas - czasMemory;
+  czasMemory = czas;
   
+  if (catLifeFl) {cat.x +=0.1; if (cat.x >150){cat.destroy(); catLifeFl = false;};}
+  klatekNaSekunde +=1;
+  richText.text = 'nr klatki: '+klatekNaSekunde+'\nklatek na sekundê: '+sredniaKlatek.funkcja(1000/czasKlatki);	// komenda /n przenosi na kolejn¹ liniê
 	}
 }
+
+
+
+
+
+
 
 </script>
 
